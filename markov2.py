@@ -11,7 +11,7 @@ import sys
 
 
 class MarkovBot():
-    messages_to_generate = 5
+    messages_to_generate = 15
     max_words = 50
     chain_length = 2
     stop_word = '\n'
@@ -84,7 +84,7 @@ class MarkovBot():
         say_something = True
         messages = []
         seed_key = None
-
+        best_message = ''
         for words in self.split_message(self.sanitize_message(message)):
             key = tuple(words[:-1])
             if key in self.word_table:
@@ -94,13 +94,15 @@ class MarkovBot():
 
             if(key in self.word_table):
                 generated = self.generate_message(seed_key=key)
-                if generated:
-                    messages.append(generated)
-
-        if len(messages):
+                if len(generated) > len(best_message):
+                    best_message = generated
+                #if generated:
+                #    messages.append(generated)
+				
+        if len(best_message):
             self.save_data()
-            message = random.choice(messages)
-            return message
+            #message = random.choice(messages)
+            return best_message
 
 
     def load_log_file(self, filename):

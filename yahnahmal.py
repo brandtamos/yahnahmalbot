@@ -33,13 +33,8 @@ def ruleresponse(bot, trigger):
 #respond to messages to you
 @module.nickname_commands('(.*)')
 def nickresponse(bot, trigger):
-	#check for swears
-	if containsswear(trigger.group(1)):
-		bot.reply("i don't know man")
+	response = brain.log(trigger.group(1))
+	if response == None:
+		bot.reply('What?')
 	else:
-		response = brain.log(trigger.group(1))
-		if response == None:
-			bot.reply('What?')
-		else:
-			bot.reply(response)
-	
+		bot.reply(response)
